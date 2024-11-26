@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Калькулятор валют</title>
+    <link rel="stylesheet" href="/Task3/style.css">
+</head>
+<body>
+    <div class="currency-converter">
+        <h1>Калькулятор валют</h1>
+        <form id="currencyForm">
+            <label for="amount">Введите сумму:</label>
+            <input type="number" id="amount" name="amount" placeholder="Введите сумму" required>
+            
+            <label for="currency">Выберите валюту:</label>
+            <select id="currency" name="currency">
+                <option value="KZT">KZT (тенге)</option>
+                <option value="USD">USD (доллар)</option>
+                <option value="EUR">EUR (евро)</option>
+            </select>
+
+            <div class="output">
+                <div>
+                    <span>KZT (тенге):</span>
+                    <span id="kzt">-</span>
+                </div>
+                <div>
+                    <span>USD (доллар):</span>
+                    <span id="usd">-</span>
+                </div>
+                <div>
+                    <span>EUR (евро):</span>
+                    <span id="eur">-</span>
+                </div>
+            </div>
+
+            <button type="submit">Конвертировать</button>
+        </form>
+    </div>
+    <script>
+        document.getElementById('currencyForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const amount = parseFloat(document.getElementById('amount').value);
+            const currency = document.getElementById('currency').value;
+
+            // Пример курсов валют
+            const rates = {
+                KZT: 1,
+                USD: 430, // 1 USD = 430 KZT
+                EUR: 500, // 1 EUR = 500 KZT
+            };
+
+            let kztValue = "-";
+            let usdValue = "-";
+            let eurValue = "-";
+
+            if (currency === 'KZT') {
+                usdValue = (amount / rates.USD).toFixed(2);
+                eurValue = (amount / rates.EUR).toFixed(2);
+            } else if (currency === 'USD') {
+                kztValue = (amount * rates.USD).toFixed(2);
+                eurValue = (amount * rates.USD / rates.EUR).toFixed(2);
+            } else if (currency === 'EUR') {
+                kztValue = (amount * rates.EUR).toFixed(2);
+                usdValue = (amount * rates.EUR / rates.USD).toFixed(2);
+            }
+
+            // Обновление значений в интерфейсе
+            document.getElementById('kzt').textContent = kztValue;
+            document.getElementById('usd').textContent = usdValue;
+            document.getElementById('eur').textContent = eurValue;
+        });
+    </script>
+</body>
+</html>
